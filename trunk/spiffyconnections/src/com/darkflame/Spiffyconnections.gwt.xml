@@ -16,6 +16,7 @@
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.darkflame.client.Spiffyconnections'/>
 
+
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>

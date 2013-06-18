@@ -31,11 +31,11 @@ public class SpiffyConnection {
 		}
 
 		public int getY() {
-			return y + sourceWidget.getAbsoluteTop();
+			return y + sourceWidget.getElement().getOffsetTop();
 		}
 
 		public int getX() {
-			return x + sourceWidget.getAbsoluteLeft();
+			return x + sourceWidget.getElement().getOffsetLeft();
 		}
 
 		public int getArrowPoint1Y() {
@@ -119,8 +119,8 @@ public class SpiffyConnection {
 		Plane, ArrowsBothEnd, Start,End
 	}
 
-	ConnectionStyle currentStyle = ConnectionStyle.ArrowsBothEnd;
-	ConnectionType currentType = ConnectionType.Line;
+	ConnectionStyle currentStyle = ConnectionStyle.End;
+	ConnectionType currentType = ConnectionType.Curve;
 	ConnectionSide currentStartSide = ConnectionSide.Auto;
 	ConnectionSide currentEndSide = ConnectionSide.Auto;
 	
@@ -129,7 +129,9 @@ public class SpiffyConnection {
 	ConnectionPoint ChosenEnd = null;
 
 	// base div for drawing
-	static HTMLPanel doddles;
+	static HTMLPanel doddles = new HTMLPanel("not setup yet");;
+	static boolean firstTimeSetupNeeded=true;
+	
 	// all lines
 	static HashMap<SpiffyConnection, String> alllines = new HashMap<SpiffyConnection, String>();
 
@@ -158,9 +160,13 @@ public class SpiffyConnection {
 			allPaths = allPaths + path;
 
 		}
-		
+		if (firstTimeSetupNeeded) {
+			firstTimeSetUp();
+		}
 		//System.out.println(allPaths);
-		
+
+		System.out.println("updating html");
+
 		doddles.getElement().setInnerHTML("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
 				+ allPaths + "</svg>test4");
 		
@@ -173,30 +179,61 @@ public class SpiffyConnection {
 
 	public SpiffyConnection(Widget source, ConnectionSide point,
 			Widget destination, ConnectionSide point2) {
-		if (doddles == null) {
+		if (firstTimeSetupNeeded) {
 			firstTimeSetUp();
 		}
 
 		MakeSpiffyConnection(source, point, destination, point2);
 
+		refreshPath();
 	}
 
 	public SpiffyConnection(Widget source, Widget destination) {
 
-		if (doddles == null) {
+		if (firstTimeSetupNeeded) {
 			firstTimeSetUp();
 		}
 
 		MakeSpiffyConnection(source, ConnectionSide.Auto, destination,
 				ConnectionSide.Auto);
+		
+		refreshPath();
 
 	}
 
-	private void firstTimeSetUp() {
+public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] objects, Widget destination) {
+				
+		
+		ArrayList<SpiffyConnection> newConnection=new ArrayList<SpiffyConnection>();
+		//makes a whole bunch of these things
+		for (Widget widget : objects) {
+			
+			newConnection.add(new SpiffyConnection(destination,widget));
+			
+		}
+		return newConnection;
+	}
+	public static ArrayList<SpiffyConnection> MakeSpiffyConnections(Widget[] objects, Widget destination) {
+				
+		
+		ArrayList<SpiffyConnection> newConnection=new ArrayList<SpiffyConnection>();
+		//makes a whole bunch of these things
+		for (Widget widget : objects) {
+			
+			newConnection.add(new SpiffyConnection(widget,destination));
+			
+		}
+		return newConnection;
+	}
+	
+	private static void firstTimeSetUp() {
+		
+		System.out.println("running first time setup");
+
 
 		doddles = new HTMLPanel("<svg></svg>test");
 		doddles.setSize("100%", "100%");
-
+		firstTimeSetupNeeded=false;
 	}
 
 	public ConnectionPoint getDestSide(ConnectionSide side) {
@@ -211,8 +248,12 @@ public class SpiffyConnection {
 
 	}
 
-	public HTMLPanel getDoddlePlane() {
+	public static HTMLPanel getDoodlePlane() {
+		if (firstTimeSetupNeeded) {
+			firstTimeSetUp();
+		}
 		return doddles;
+		
 	}
 
 	private ArrayList<ConnectionPoint> getSides(Widget source) {
@@ -405,6 +446,12 @@ public class SpiffyConnection {
 
 		// make drawing based on type
 		refreshPath();
+	}
+	
+	public static void clearAllPaths(){
+		
+		alllines.clear();
+		
 	}
 
 	/** if the objects move, this should be triggered **/
