@@ -168,7 +168,7 @@ public class SpiffyConnection {
 		System.out.println("updating html");
 
 		doddles.getElement().setInnerHTML("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
-				+ allPaths + "</svg>test4");
+				+ allPaths + "</svg>");
 		
 		doddles.setSize("100%", "100%");
 	}
