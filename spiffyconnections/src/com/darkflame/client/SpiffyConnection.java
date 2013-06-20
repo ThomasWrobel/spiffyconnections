@@ -12,7 +12,21 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class SpiffyConnection {
 
+	public static boolean isWidgetsInContainerMode() {
+		return widgetsInContainerMode;
+	}
+
+
+
+	public static void setWidgetsInContainerMode(boolean widgetsInContainerMode) {
+		SpiffyConnection.widgetsInContainerMode = widgetsInContainerMode;
+	}
+
+	static boolean widgetsInContainerMode = false;
+	
+	
 	static class ConnectionPoint {
+		
 		static int margin = 10;
 		int arrowHeadSize = 15;
 		Widget sourceWidget;
@@ -31,10 +45,18 @@ public class SpiffyConnection {
 		}
 
 		public int getY() {
+			
+			if (widgetsInContainerMode){
+				return y + sourceWidget.getElement().getParentElement().getOffsetTop();
+			}
+			
 			return y + sourceWidget.getElement().getOffsetTop();
 		}
 
 		public int getX() {
+			if (widgetsInContainerMode){
+				return x + sourceWidget.getElement().getParentElement().getOffsetLeft();
+			}
 			return x + sourceWidget.getElement().getOffsetLeft();
 		}
 
@@ -141,6 +163,8 @@ public class SpiffyConnection {
 
 
 	}
+	
+	
 
 	static private void addPathToDoddle(SpiffyConnection sc, String svgPath) {
 

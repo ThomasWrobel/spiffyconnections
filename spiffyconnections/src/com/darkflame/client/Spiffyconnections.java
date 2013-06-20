@@ -37,9 +37,11 @@ public class Spiffyconnections implements EntryPoint {
 		
 		final SpiffyConnection meepco = new SpiffyConnection(meep,ConnectionSide.Auto, co,ConnectionSide.Auto);
 		final SpiffyConnection meepco2 = new SpiffyConnection(la,ConnectionSide.Auto, co,ConnectionSide.Auto);
+		
 		meepco2.setToCurve();
 		meepco2.refreshPath();
 		meepco.refreshPath();
+		
 		SpiffyConnection.refreshLines();
 		
 		
