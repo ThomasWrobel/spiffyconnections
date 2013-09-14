@@ -10,6 +10,8 @@ import com.darkflame.client.SpiffyConnection.ConnectionPoint;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+
+/** a class that represents a single connection between two points **/
 public class SpiffyConnection {
 
 	public static boolean isWidgetsInContainerMode() {
@@ -151,60 +153,27 @@ public class SpiffyConnection {
 	ConnectionPoint ChosenEnd = null;
 
 	// base div for drawing
-	static HTMLPanel doddles = new HTMLPanel("not setup yet");;
-	static boolean firstTimeSetupNeeded=true;
+	//static 
 	
-	// all lines
-	static HashMap<SpiffyConnection, String> alllines = new HashMap<SpiffyConnection, String>();
-
-	static private void removePathFromDoddle(SpiffyConnection spiffyConnection) {
-
-		alllines.remove(spiffyConnection);
-
-
-	}
+	
+	/** The SpiffyConnectionPanel has to be given to the panel, and it draws everything on that **/
+	SpiffyConnectionPanel doddles = null;
+	
 	
 	
 
-	static private void addPathToDoddle(SpiffyConnection sc, String svgPath) {
-
-		alllines.put(sc, svgPath);
-
-
-	}
-
-	public static void refreshLines() {
-		// refresh lines
-		String allPaths = "";
-
-		Iterator<String> lit = alllines.values().iterator();
-		while (lit.hasNext()) {
-
-			String path = lit.next();
-			allPaths = allPaths + path;
-
-		}
-		if (firstTimeSetupNeeded) {
-			firstTimeSetUp();
-		}
-		//System.out.println(allPaths);
-
-		System.out.println("updating html");
-
-		doddles.getElement().setInnerHTML("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
-				+ allPaths + "</svg>");
-		
-		doddles.setSize("100%", "100%");
-	}
 
 	ArrayList<ConnectionPoint> sourceSides = new ArrayList<ConnectionPoint>();
 
 	ArrayList<ConnectionPoint> destinationSides = new ArrayList<ConnectionPoint>();
 
 	public SpiffyConnection(Widget source, ConnectionSide point,
-			Widget destination, ConnectionSide point2) {
-		if (firstTimeSetupNeeded) {
-			firstTimeSetUp();
+			Widget destination, ConnectionSide point2, SpiffyConnectionPanel DoddlePanel) {
+
+		doddles=DoddlePanel;
+		
+		if (doddles.firstTimeSetupNeeded) {
+			doddles.firstTimeSetUp();
 		}
 
 		MakeSpiffyConnection(source, point, destination, point2);
@@ -212,10 +181,12 @@ public class SpiffyConnection {
 		refreshPath();
 	}
 
-	public SpiffyConnection(Widget source, Widget destination) {
+	public SpiffyConnection(Widget source, Widget destination, SpiffyConnectionPanel DoddlePanel) {
 
-		if (firstTimeSetupNeeded) {
-			firstTimeSetUp();
+		doddles=DoddlePanel;
+		
+		if (doddles.firstTimeSetupNeeded) {
+			doddles.firstTimeSetUp();
 		}
 
 		MakeSpiffyConnection(source, ConnectionSide.Auto, destination,
@@ -225,41 +196,8 @@ public class SpiffyConnection {
 
 	}
 
-public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] objects, Widget destination) {
-				
-		
-		ArrayList<SpiffyConnection> newConnection=new ArrayList<SpiffyConnection>();
-		//makes a whole bunch of these things
-		for (Widget widget : objects) {
-			
-			newConnection.add(new SpiffyConnection(destination,widget));
-			
-		}
-		return newConnection;
-	}
-	public static ArrayList<SpiffyConnection> MakeSpiffyConnections(Widget[] objects, Widget destination) {
-				
-		
-		ArrayList<SpiffyConnection> newConnection=new ArrayList<SpiffyConnection>();
-		//makes a whole bunch of these things
-		for (Widget widget : objects) {
-			
-			newConnection.add(new SpiffyConnection(widget,destination));
-			
-		}
-		return newConnection;
-	}
+
 	
-	private static void firstTimeSetUp() {
-		
-		System.out.println("running first time setup");
-
-
-		doddles = new HTMLPanel("<svg></svg>test");
-		doddles.setSize("100%", "100%");
-		firstTimeSetupNeeded=false;
-	}
-
 	public ConnectionPoint getDestSide(ConnectionSide side) {
 
 		for (ConnectionPoint cside : destinationSides) {
@@ -272,13 +210,6 @@ public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] obje
 
 	}
 
-	public static HTMLPanel getDoodlePlane() {
-		if (firstTimeSetupNeeded) {
-			firstTimeSetUp();
-		}
-		return doddles;
-		
-	}
 
 	private ArrayList<ConnectionPoint> getSides(Widget source) {
 		ArrayList<ConnectionPoint> allsides = new ArrayList<ConnectionPoint>();
@@ -343,7 +274,7 @@ public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] obje
 		}
 
 		// save it to the main paths, which in turn updates the doddle
-		addPathToDoddle(this, svgPath);
+		doddles.addPathToDoddle(this, svgPath);
 
 	}
 
@@ -377,7 +308,7 @@ public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] obje
 
 		
 		// save it to the main paths, which in turn updates the doddle
-		addPathToDoddle(this, svgPath);
+		doddles.addPathToDoddle(this, svgPath);
 
 	}
 
@@ -392,7 +323,7 @@ public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] obje
 	}
 
 	public void removeLink() {
-		removePathFromDoddle(this);
+		doddles.removePathFromDoddle(this);
 	}
 
 	private void MakeSpiffyConnection(Widget source, ConnectionSide startSide,
@@ -480,9 +411,9 @@ public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] obje
 		refreshPath();
 	}
 	
-	public static void clearAllPaths(){
+	public void clearAllPaths(){
 		
-		alllines.clear();
+		doddles.alllines.clear();
 		
 	}
 

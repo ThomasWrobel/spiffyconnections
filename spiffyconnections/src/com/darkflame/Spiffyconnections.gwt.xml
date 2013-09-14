@@ -15,7 +15,7 @@
 
   <!-- Specify the app entry point class.                         -->  
   <!-- uncomment this line for testing                       -->
-  <!-- <entry-point class='com.darkflame.client.Spiffyconnections'/>   -->
+ <!--  <entry-point class='com.darkflame.client.Spiffyconnections'/>   -->
 
 
   <!-- Specify the paths for translatable code                    -->
