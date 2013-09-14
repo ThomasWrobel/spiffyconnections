@@ -35,14 +35,21 @@ public class Spiffyconnections implements EntryPoint {
 		RootPanel.get().add(co,644,444);
 		RootPanel.get().add(la,544,344);
 		
-		final SpiffyConnection meepco = new SpiffyConnection(meep,ConnectionSide.Auto, co,ConnectionSide.Auto);
-		final SpiffyConnection meepco2 = new SpiffyConnection(la,ConnectionSide.Auto, co,ConnectionSide.Auto);
+		
+
+		System.out.println("onModuleLoad triggered");
+		
+		 final SpiffyConnectionPanel connectionDeDoo = new SpiffyConnectionPanel();
+		 
+		final SpiffyConnection meepco = connectionDeDoo.AddNewConnection(meep,ConnectionSide.Auto, co,ConnectionSide.Auto);  // new SpiffyConnection(meep,ConnectionSide.Auto, co,ConnectionSide.Auto);
+		final SpiffyConnection meepco2 = connectionDeDoo.AddNewConnection(la,ConnectionSide.Auto, co,ConnectionSide.Auto); //new SpiffyConnection(la,ConnectionSide.Auto, co,ConnectionSide.Auto);
 		
 		meepco2.setToCurve();
 		meepco2.refreshPath();
 		meepco.refreshPath();
-		
-		SpiffyConnection.refreshLines();
+
+		System.out.println("onModuleLoad refreshing lines");
+		connectionDeDoo.refreshLines();
 		
 		
 		Timer test = new Timer() {
@@ -61,13 +68,14 @@ public class Spiffyconnections implements EntryPoint {
 				
 				meepco2.refreshPath();
 				meepco.refreshPath();
-				SpiffyConnection.refreshLines();
+				connectionDeDoo.refreshLines();
 				
 			}
 		};
 		test.scheduleRepeating(50);
-		
-		RootPanel.get().add(SpiffyConnection.doddles,0,0);
+
+		System.out.println("adding panel object");
+		RootPanel.get().add(connectionDeDoo,0,0);
 		
 		
 		
