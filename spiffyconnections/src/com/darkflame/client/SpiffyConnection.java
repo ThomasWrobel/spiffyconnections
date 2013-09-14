@@ -472,6 +472,14 @@ public static ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] obje
 		refreshPath();
 	}
 	
+	public void setToLine() {
+
+		currentType = ConnectionType.Line;
+
+		// make drawing based on type
+		refreshPath();
+	}
+	
 	public static void clearAllPaths(){
 		
 		alllines.clear();
