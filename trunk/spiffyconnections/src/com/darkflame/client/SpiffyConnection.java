@@ -131,7 +131,7 @@ public class SpiffyConnection {
 		}
 	}
 
-	enum ConnectionSide {
+	public enum ConnectionSide {
 		Top, Bottom, Left, Right, Auto,MiddleOfObject
 	}
 
