@@ -349,7 +349,7 @@ public class SpiffyConnection {
 				source.getOffsetWidth() / 2, 
 				source.getOffsetHeight() / 2);
 		
-		middleOfDestObject = new ConnectionPoint(source, ConnectionSide.MiddleOfObject,
+		middleOfDestObject = new ConnectionPoint(destination, ConnectionSide.MiddleOfObject,
 				destination.getOffsetWidth() / 2, 
 				destination.getOffsetHeight() / 2);
 
