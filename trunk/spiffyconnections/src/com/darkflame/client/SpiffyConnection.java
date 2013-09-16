@@ -132,7 +132,7 @@ public class SpiffyConnection {
 	}
 
 	enum ConnectionSide {
-		Top, Bottom, Left, Right, Auto
+		Top, Bottom, Left, Right, Auto,MiddleOfObject
 	}
 
 	enum ConnectionType {
@@ -145,8 +145,11 @@ public class SpiffyConnection {
 
 	ConnectionStyle currentStyle = ConnectionStyle.End;
 	ConnectionType currentType = ConnectionType.Curve;
+	
 	ConnectionSide currentStartSide = ConnectionSide.Auto;
 	ConnectionSide currentEndSide = ConnectionSide.Auto;
+	
+	
 	
 	
 	ConnectionPoint ChosenStart = null;
@@ -164,7 +167,10 @@ public class SpiffyConnection {
 
 
 	ArrayList<ConnectionPoint> sourceSides = new ArrayList<ConnectionPoint>();
-
+	
+	ConnectionPoint middleOfSourceObject;
+	ConnectionPoint middleOfDestObject;
+	
 	ArrayList<ConnectionPoint> destinationSides = new ArrayList<ConnectionPoint>();
 
 	public SpiffyConnection(Widget source, ConnectionSide point,
@@ -181,6 +187,8 @@ public class SpiffyConnection {
 		refreshPath();
 	}
 
+	
+	
 	public SpiffyConnection(Widget source, Widget destination, SpiffyConnectionPanel DoddlePanel) {
 
 		doddles=DoddlePanel;
@@ -328,6 +336,7 @@ public class SpiffyConnection {
 
 	private void MakeSpiffyConnection(Widget source, ConnectionSide startSide,
 			Widget destination, ConnectionSide endSide) {
+		
 		// store all the possible sides of each widget
 		sourceSides = getSides(source);
 		destinationSides = getSides(destination);
@@ -335,6 +344,14 @@ public class SpiffyConnection {
 		currentStartSide = startSide;
 		currentEndSide = endSide;
 		
+		//get middle of objects
+		middleOfSourceObject = new ConnectionPoint(source, ConnectionSide.MiddleOfObject,
+				source.getOffsetWidth() / 2, 
+				source.getOffsetHeight() / 2);
+		
+		middleOfDestObject = new ConnectionPoint(source, ConnectionSide.MiddleOfObject,
+				destination.getOffsetWidth() / 2, 
+				destination.getOffsetHeight() / 2);
 
 		// work out any sides set to auto
 		workOutAutoConnectionPoints();
@@ -350,6 +367,13 @@ public class SpiffyConnection {
 
 		if (currentStartSide == ConnectionSide.Auto) {
 			possibleStarts = sourceSides;
+			
+		} else if (currentStartSide == ConnectionSide.MiddleOfObject){
+			
+			possibleStarts = new ArrayList<ConnectionPoint>();	
+			possibleStarts.add(middleOfSourceObject);
+			
+			
 		} else {
 			possibleStarts = new ArrayList<ConnectionPoint>();
 			possibleStarts.add(getSourceSide(currentStartSide));
@@ -359,7 +383,13 @@ public class SpiffyConnection {
 		if (currentEndSide == ConnectionSide.Auto) {
 
 			possibleEnds = destinationSides;
-		} else {
+		} else if (currentEndSide == ConnectionSide.MiddleOfObject){
+			
+			possibleEnds = new ArrayList<ConnectionPoint>();	
+			possibleEnds.add(middleOfDestObject);
+			
+			
+		}else {
 			possibleEnds = new ArrayList<ConnectionPoint>();
 			possibleEnds.add(getDestSide(currentEndSide));
 
