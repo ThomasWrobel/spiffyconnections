@@ -91,7 +91,7 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		return newConnection;
 	}
 	
-	static void setDefaultConnectionStyle(ConnectionSide start, ConnectionSide end){
+	public static void setDefaultConnectionStyle(ConnectionSide start, ConnectionSide end){
 		
 		defaultStartStyle = start;
 		
