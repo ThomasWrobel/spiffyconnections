@@ -14,6 +14,9 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 	
 	/** All the known connection objects **/
 	static ArrayList<SpiffyConnection> allConnectionObjects = new ArrayList<SpiffyConnection>();
+
+	private static ConnectionSide defaultStartStyle = ConnectionSide.Auto;
+	private static ConnectionSide defaultEndStyle = ConnectionSide.Auto;
 	
 	// all lines
 	HashMap<SpiffyConnection, String> alllines = new HashMap<SpiffyConnection, String>();
@@ -82,10 +85,18 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		//makes a whole bunch of these things
 		for (Widget widget : objects) {
 			
-			newConnection.add(new SpiffyConnection(widget,destination,this));
+			newConnection.add(new SpiffyConnection(widget,defaultStartStyle,destination,defaultEndStyle,this));
 			
 		}
 		return newConnection;
+	}
+	
+	static void setDefaultConnectionStyle(ConnectionSide start, ConnectionSide end){
+		
+		defaultStartStyle = start;
+		
+		defaultEndStyle = end;
+		
 	}
 	
 	public ArrayList<SpiffyConnection> MakeSpiffyConnectionsInv(Widget[] objects, Widget destination) {
@@ -96,7 +107,7 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		//makes a whole bunch of these things
 		for (Widget widget : objects) {
 			
-			newConnection.add(new SpiffyConnection(destination,widget,this));
+			newConnection.add(new SpiffyConnection(destination,defaultStartStyle,widget,defaultEndStyle,this));
 			
 		}
 		return newConnection;
