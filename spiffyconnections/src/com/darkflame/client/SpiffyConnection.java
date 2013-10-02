@@ -16,9 +16,20 @@ import com.google.gwt.user.client.ui.Widget;
 public class SpiffyConnection {
 	static boolean widgetsInContainerMode = false;
 	static boolean UseCSSMode = false;
+	String LineColour = "blue";
 	
 	
 	
+	public String getLineColour() {
+		return LineColour;
+	}
+
+
+
+	public void setLineColour(String lineColour) {
+		LineColour = lineColour;
+	}
+
 	static class ConnectionPoint {
 		
 		static int margin = 10;
@@ -295,7 +306,7 @@ public class SpiffyConnection {
 				+ "," + chosenStart.getY() + " S " + mx + "," + my + " " + cx
 				+ "," + cy + " " + mex + "," + mey + " " + chosenEnd.getX()
 				+ "," + chosenEnd.getY()
-				+ " \" stroke=\"blue\" stroke-width=\"3\" fill=\"none\" />";
+				+ " \" stroke=\""+LineColour+"\" stroke-width=\"3\" fill=\"none\" />";
 		if ((currentStyle == ConnectionStyle.Start) ||(currentStyle == ConnectionStyle.ArrowsBothEnd) ){
 			//add arrow to path
 			svgPath = addArrowToConnector(chosenStart, svgPath,"blue");
