@@ -36,6 +36,8 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		
 	}
 	
+	
+	
 	public void clearAllPaths(){
 		
 		alllines.clear();
@@ -114,6 +116,26 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 	}
 
 
+	public static boolean isWidgetsInContainerMode() {
+		return SpiffyConnection.widgetsInContainerMode;
+	}
+
+
+
+	public static void setWidgetsInContainerMode(boolean widgetsInContainerMode) {
+		SpiffyConnection.widgetsInContainerMode = widgetsInContainerMode;
+	}
+
+	public static boolean isWidgetsInUseCSSMode() {
+		return SpiffyConnection.UseCSSMode;
+	}
+
+
+
+	public static void setUseCSSMode(boolean widgetsInContainerMode) {
+		SpiffyConnection.UseCSSMode = widgetsInContainerMode;
+	}
+	
 	//public HTMLPanel getDoodlePlane() {
 	//	if (firstTimeSetupNeeded) {
 	//		firstTimeSetUp();
