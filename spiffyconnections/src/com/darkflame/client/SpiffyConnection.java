@@ -7,24 +7,16 @@ import java.util.Iterator;
 import org.mortbay.log.Log;
 
 import com.darkflame.client.SpiffyConnection.ConnectionPoint;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 
 /** a class that represents a single connection between two points **/
 public class SpiffyConnection {
-
-	public static boolean isWidgetsInContainerMode() {
-		return widgetsInContainerMode;
-	}
-
-
-
-	public static void setWidgetsInContainerMode(boolean widgetsInContainerMode) {
-		SpiffyConnection.widgetsInContainerMode = widgetsInContainerMode;
-	}
-
 	static boolean widgetsInContainerMode = false;
+	static boolean UseCSSMode = false;
+	
 	
 	
 	static class ConnectionPoint {
@@ -48,11 +40,28 @@ public class SpiffyConnection {
 
 		public int getY() {
 			
+			//first get the correct element			
+			Element useThis = sourceWidget.getElement();
 			if (widgetsInContainerMode){
-				return y + sourceWidget.getElement().getParentElement().getOffsetTop();
+				useThis = sourceWidget.getElement().getParentElement();
 			}
 			
-			return y + sourceWidget.getElement().getOffsetTop();
+			//then return Y based on css or javascript data
+			if (UseCSSMode){
+				String topCSS = useThis.getStyle().getTop();
+				
+				return Integer.parseInt(topCSS.substring(0, topCSS.length()-2));
+				
+			}
+			
+			return y + useThis.getOffsetTop();
+			
+			
+		//	if (widgetsInContainerMode){
+		//		return y + sourceWidget.getElement().getParentElement().getOffsetTop();
+			//}
+		//	
+			//return y + sourceWidget.getElement().getOffsetTop();
 		}
 
 		public int getX() {
