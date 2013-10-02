@@ -65,10 +65,27 @@ public class SpiffyConnection {
 		}
 
 		public int getX() {
+			
+			//first get the correct element			
+			Element useThis = sourceWidget.getElement();
 			if (widgetsInContainerMode){
-				return x + sourceWidget.getElement().getParentElement().getOffsetLeft();
+				useThis = sourceWidget.getElement().getParentElement();
 			}
-			return x + sourceWidget.getElement().getOffsetLeft();
+			
+			//then return Y based on css or javascript data
+			if (UseCSSMode){
+				
+				String leftCSS = useThis.getStyle().getLeft();				
+				return Integer.parseInt(leftCSS.substring(0, leftCSS.length()-2));
+				
+			}
+			
+			return y + useThis.getOffsetLeft();
+						
+			//if (widgetsInContainerMode){
+			//	return x + sourceWidget.getElement().getParentElement().getOffsetLeft();
+			//}
+			//return x + sourceWidget.getElement().getOffsetLeft();
 		}
 
 		public int getArrowPoint1Y() {
