@@ -31,7 +31,7 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 
 		super("<svg></svg>test");
 		
-		this.setSize("100%", "100%");
+	//	this.setSize("100%", "100%");
 		
 		
 	}
@@ -77,8 +77,10 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		return new SpiffyConnection(source ,destination,this);
 	}
 
-    
-	public ArrayList<SpiffyConnection> MakeSpiffyConnections(Widget[] objects, Widget destination) {
+	public ArrayList<SpiffyConnection> MakeSpiffyConnections(Widget[] objects, Widget destination){
+		return MakeSpiffyConnections (objects,destination,"blue");
+	}
+	public ArrayList<SpiffyConnection> MakeSpiffyConnections(Widget[] objects, Widget destination, String connectioncolour) {
 				
 
 		System.out.println("MakeSpiffyConnections");
@@ -86,8 +88,9 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		ArrayList<SpiffyConnection> newConnection=new ArrayList<SpiffyConnection>();
 		//makes a whole bunch of these things
 		for (Widget widget : objects) {
-			
-			newConnection.add(new SpiffyConnection(widget,defaultStartStyle,destination,defaultEndStyle,this));
+			SpiffyConnection newCurve = new SpiffyConnection(widget,defaultStartStyle,destination,defaultEndStyle,this);
+			newCurve.setLineColour(connectioncolour);
+			newConnection.add(newCurve);
 			
 		}
 		return newConnection;
@@ -165,7 +168,7 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 		doddles.getElement().setInnerHTML("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
 				+ allPaths + "</svg>");
 		
-		doddles.setSize("100%", "100%");
+//		doddles.setSize("100%", "100%");
 	}
 	void removePathFromDoddle(SpiffyConnection spiffyConnection) {
 
