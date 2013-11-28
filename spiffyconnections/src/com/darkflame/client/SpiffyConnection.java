@@ -28,6 +28,7 @@ public class SpiffyConnection {
 
 	public void setLineColour(String lineColour) {
 		LineColour = lineColour;
+		refreshPath();
 	}
 
 	static class ConnectionPoint {
