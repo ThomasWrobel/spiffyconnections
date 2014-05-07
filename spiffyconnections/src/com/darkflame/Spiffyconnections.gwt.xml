@@ -17,7 +17,10 @@
   <!-- uncomment this line for testing                       -->
  <!--  <entry-point class='com.darkflame.client.Spiffyconnections'/>   -->
 
-
+	<!--  Note; No permutation for ie10 specified at the moment, due to (I think) an
+	error caused by a imported jar  -->
+	<set-property name="user.agent" value="ie8,ie9,opera,gecko1_8,safari" />
+	
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>

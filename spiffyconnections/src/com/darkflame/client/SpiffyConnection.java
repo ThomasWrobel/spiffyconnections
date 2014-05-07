@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.mortbay.log.Log;
+//import org.mortbay.log.Log;
 
 import com.darkflame.client.SpiffyConnection.ConnectionPoint;
 import com.google.gwt.dom.client.Element;
