@@ -29,7 +29,7 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 
 	public SpiffyConnectionPanel() {
 
-		super("<svg></svg>test");
+		super("<svg width=\"100%\" height=\"100%\"></svg>test");
 		
 	//	this.setSize("100%", "100%");
 		
@@ -165,7 +165,7 @@ public class SpiffyConnectionPanel extends HTMLPanel {
 
 		System.out.println("updating html");
 
-		doddles.getElement().setInnerHTML("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
+		doddles.getElement().setInnerHTML("<svg  width=\"100%\" height=\"100%\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"
 				+ allPaths + "</svg>");
 		
 //		doddles.setSize("100%", "100%");
