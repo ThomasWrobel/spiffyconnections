@@ -6,6 +6,9 @@ import java.util.Iterator;
 
 //import org.mortbay.log.Log;
 
+
+import java.util.logging.Logger;
+
 import com.darkflame.client.SpiffyConnection.ConnectionPoint;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -18,7 +21,8 @@ public class SpiffyConnection {
 	static boolean UseCSSMode = false;
 	String LineColour = "blue";
 	
-	
+
+	static Logger Log = Logger.getLogger("SpiffyConnection");
 	
 	public String getLineColour() {
 		return LineColour;
@@ -62,7 +66,7 @@ public class SpiffyConnection {
 			if (UseCSSMode){
 				String topCSS = useThis.getStyle().getTop();
 				
-				return Integer.parseInt(topCSS.substring(0, topCSS.length()-2));
+				return y + Integer.parseInt(topCSS.substring(0, topCSS.length()-2));
 				
 			}
 			
@@ -88,11 +92,11 @@ public class SpiffyConnection {
 			if (UseCSSMode){
 				
 				String leftCSS = useThis.getStyle().getLeft();				
-				return Integer.parseInt(leftCSS.substring(0, leftCSS.length()-2));
+				return x +Integer.parseInt(leftCSS.substring(0, leftCSS.length()-2));
 				
 			}
 			
-			return y + useThis.getOffsetLeft();
+			return x + useThis.getOffsetLeft();
 						
 			//if (widgetsInContainerMode){
 			//	return x + sourceWidget.getElement().getParentElement().getOffsetLeft();
@@ -262,17 +266,24 @@ public class SpiffyConnection {
 
 		// get all 4 sides
 		// top
-		allsides.add(new ConnectionPoint(source, ConnectionSide.Top, source
-				.getOffsetWidth() / 2, 0));
+		ConnectionPoint top = new ConnectionPoint(source, ConnectionSide.Top, source.getOffsetWidth() / 2, 0);		
+		allsides.add(top);
+		Log.info("___top:"+top.y);
+		
 		// bottom
-		allsides.add(new ConnectionPoint(source, ConnectionSide.Bottom, source
-				.getOffsetWidth() / 2, source.getOffsetHeight()));
+		ConnectionPoint bottom = new ConnectionPoint(source, ConnectionSide.Bottom, source.getOffsetWidth() / 2, source.getOffsetHeight());	
+		allsides.add(bottom);
+		Log.info("___bottom:"+bottom.y);
+		
 		// left
 		allsides.add(new ConnectionPoint(source, ConnectionSide.Left, 0, source
 				.getOffsetHeight() / 2));
 		// right
 		allsides.add(new ConnectionPoint(source, ConnectionSide.Right, source
 				.getOffsetWidth(), source.getOffsetHeight() / 2));
+		
+
+		Log.info("___Widget size:"+source.getOffsetWidth()+","+source.getOffsetHeight());
 
 		return allsides;
 	}
@@ -296,9 +307,11 @@ public class SpiffyConnection {
 		int mx = chosenStart.getOffsetX();
 		int my = chosenStart.getOffsetY();
 
+		Log.info("start point:"+mx+","+my);
+	
 		int mex = chosenEnd.getOffsetX();
 		int mey = chosenEnd.getOffsetY();
-
+		Log.info("end point:"+mex+","+mey);
 		// get the start/end data and then make the svg string
 		int cx = (mx + mex) / 2;
 		int cy = (my + mey) / 2;
@@ -331,10 +344,15 @@ public class SpiffyConnection {
 		// first we go out by the margin
 		int mx = chosenStart.getOffsetX();
 		int my = chosenStart.getOffsetY();
+		
+		Log.info("start point:"+mx+","+my);
+		
 
 		int mex = chosenEnd.getOffsetX();
 		int mey = chosenEnd.getOffsetY();
 
+		Log.info("end point:"+mex+","+mey);
+		
 		String svgPath = "<path id=\"lineAB\" d=\"M" + chosenStart.getX() + " "
 				+ chosenStart.getY() + " L" + mx + "," + my + " L" + mex + ","
 				+ mey + " L" + chosenEnd.getX() + "," + chosenEnd.getY()
@@ -438,6 +456,7 @@ public class SpiffyConnection {
 		int HighestDis=990000; //higher then the highest distance ever!
 		int cdis=0;
 		
+
 		for (ConnectionPoint connectionPointStart : possibleStarts) {
 			
 			//loop over all ends
@@ -445,7 +464,8 @@ public class SpiffyConnection {
 				
 				cdis = (int) Math.hypot(connectionPointEnd.getX()-connectionPointStart.getX(), 
 								  connectionPointEnd.getY()-connectionPointStart.getY());
-				
+
+				//Log.info("___working out possible route distance:"+cdis);
 				//System.out.println(cdis);
 				
 				if (cdis<HighestDis){
@@ -454,13 +474,16 @@ public class SpiffyConnection {
 					
 					
 					
-				//if shortest distance, then use them
-				ChosenStart = connectionPointStart;
-				ChosenEnd = connectionPointEnd;
+					//if shortest distance, then use them
+					ChosenStart = connectionPointStart;
+					ChosenEnd = connectionPointEnd;
 				}
 				
 			}
 		}
+		
+		Log.info("___ChosenPath:"+ChosenStart.side.toString()+"("+ChosenStart.x+","+ChosenStart.y+")   "+ChosenEnd.side.toString()+"("+ChosenEnd.x+","+ChosenEnd.y+")");
+		Log.info("___ChosenPath:"+ChosenStart.side.toString()+"("+ChosenStart.getOffsetX()+","+ChosenStart.getOffsetY()+")   "+ChosenEnd.side.toString()+"("+ChosenEnd.getOffsetX()+","+ChosenEnd.getOffsetY()+")");
 	}
 
 	public void setToCurve() {
